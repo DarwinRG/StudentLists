@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
-    EditText etName, etAge, etBirthday;
+    EditText etName, etAge, etBirthday, etEmail;
     Spinner spinnerSex;
     Button btnAdd, btnDelete, btnViewAll;
     String selectedSex;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
         etBirthday = findViewById(R.id.etBirthday);
+        etEmail = findViewById(R.id.etEmail);
         spinnerSex = findViewById(R.id.spinnerSex);
         btnAdd = findViewById(R.id.btnAdd);
         btnDelete = findViewById(R.id.btnDelete);
@@ -111,12 +112,18 @@ public class MainActivity extends AppCompatActivity {
         String name = etName.getText().toString();
         String ageStr = etAge.getText().toString();
         String birthday = etBirthday.getText().toString();
-
-        if (name.isEmpty() || ageStr.isEmpty() || birthday.isEmpty()) {
+        String email = etEmail.getText().toString();
+    
+        if (name.isEmpty() || ageStr.isEmpty() || birthday.isEmpty() || email.isEmpty()) {
             Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_LONG).show();
             return;
         }
-
+    
+        if (!isValidEmail(email)) {
+            Toast.makeText(MainActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
+            return;
+        }
+    
         int age;
         try {
             age = Integer.parseInt(ageStr);
@@ -124,21 +131,26 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Invalid age", Toast.LENGTH_LONG).show();
             return;
         }
-
+    
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
+    
         executor.execute(() -> {
-            boolean isInserted = myDb.insertData(name, age, birthday, selectedSex);
+            boolean isInserted = myDb.insertData(name, age, birthday, selectedSex, email);
             handler.post(() -> {
                 if (isInserted) {
-                    Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Student Data Added", Toast.LENGTH_LONG).show();
                     clearFields();
                 } else {
-                    Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Student Data not Added", Toast.LENGTH_LONG).show();
                 }
             });
         });
+    }
+    
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        return email.matches(emailPattern);
     }
 
     private void fetchDataForDelete() {
@@ -152,28 +164,30 @@ public class MainActivity extends AppCompatActivity {
     private void fetchData(boolean isDeleteOperation) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-
+    
         executor.execute(() -> {
             Cursor res = myDb.getAllData();
             handler.post(() -> {
                 if (res.getCount() == 0) {
-                    showMessage("Error", "No data found");
+                    showMessage("No Data Found", "There are no student records available.");
                     return;
                 }
-
+    
                 ArrayList<String> entryList = new ArrayList<>();
                 StringBuilder buffer = new StringBuilder();
                 while (res.moveToNext()) {
                     String entry = "ID: " + res.getString(0) + ", Name: " + res.getString(1) + ", Age: "
-                            + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4);
+                            + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4)
+                            + ", Email: " + res.getString(5);
                     entryList.add(entry);
                     buffer.append("ID :").append(res.getString(0)).append("\n");
                     buffer.append("Name :").append(res.getString(1)).append("\n");
                     buffer.append("Age :").append(res.getString(2)).append("\n");
                     buffer.append("Birthday :").append(res.getString(3)).append("\n");
-                    buffer.append("Sex :").append(res.getString(4)).append("\n\n");
+                    buffer.append("Sex :").append(res.getString(4)).append("\n");
+                    buffer.append("Email :").append(res.getString(5)).append("\n\n");
                 }
-
+    
                 if (isDeleteOperation) {
                     showDeleteDialog(entryList);
                 } else {
@@ -199,17 +213,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(entryList.toArray(new String[0]), (dialog, which) -> {
             String selectedEntry = entryList.get(which);
             String selectedName = selectedEntry.split(",")[1].split(":")[1].trim();
-
+    
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
-
+    
             executor.execute(() -> {
                 int deletedRows = myDb.deleteData(selectedName);
                 handler.post(() -> {
                     if (deletedRows > 0) {
-                        Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Student Data Deleted", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Student Data not Deleted", Toast.LENGTH_LONG).show();
                     }
                 });
             });
@@ -221,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         etName.setText("");
         etBirthday.setText("");
         etAge.setText("");
+        etEmail.setText("");
         spinnerSex.setSelection(0);
     }
 }
