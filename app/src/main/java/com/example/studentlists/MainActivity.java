@@ -2,8 +2,9 @@ package com.example.studentlists;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -123,15 +126,61 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        new InsertDataTask().execute(name, age, birthday, selectedSex);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            boolean isInserted = myDb.insertData(name, age, birthday, selectedSex);
+            handler.post(() -> {
+                if (isInserted) {
+                    Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
+                    clearFields();
+                } else {
+                    Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
+                }
+            });
+        });
     }
 
     private void fetchDataForDelete() {
-        new FetchDataTask(true).execute();
+        fetchData(true);
     }
 
     private void viewAll() {
-        new FetchDataTask(false).execute();
+        fetchData(false);
+    }
+
+    private void fetchData(boolean isDeleteOperation) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            Cursor res = myDb.getAllData();
+            handler.post(() -> {
+                if (res.getCount() == 0) {
+                    showMessage("Error", "No data found");
+                    return;
+                }
+
+                ArrayList<String> entryList = new ArrayList<>();
+                StringBuilder buffer = new StringBuilder();
+                while (res.moveToNext()) {
+                    String entry = "ID: " + res.getString(0) + ", Name: " + res.getString(1) + ", Age: " + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4);
+                    entryList.add(entry);
+                    buffer.append("ID :").append(res.getString(0)).append("\n");
+                    buffer.append("Name :").append(res.getString(1)).append("\n");
+                    buffer.append("Age :").append(res.getString(2)).append("\n");
+                    buffer.append("Birthday :").append(res.getString(3)).append("\n");
+                    buffer.append("Sex :").append(res.getString(4)).append("\n\n");
+                }
+
+                if (isDeleteOperation) {
+                    showDeleteDialog(entryList);
+                } else {
+                    showMessage("Data", buffer.toString());
+                }
+            });
+        });
     }
 
     private void showMessage(String title, String message) {
@@ -144,92 +193,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private class InsertDataTask extends AsyncTask<Object, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            String name = (String) params[0];
-            int age = (int) params[1];
-            String birthday = (String) params[2];
-            String sex = (String) params[3];
-            return myDb.insertData(name, age, birthday, sex);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isInserted) {
-            if (isInserted) {
-                Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                clearFields();
-            } else {
-                Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private class FetchDataTask extends AsyncTask<Void, Void, Cursor> {
-        private boolean isDeleteOperation;
-
-        FetchDataTask(boolean isDeleteOperation) {
-            this.isDeleteOperation = isDeleteOperation;
-        }
-
-        @Override
-        protected Cursor doInBackground(Void... voids) {
-            return myDb.getAllData();
-        }
-
-        @Override
-        protected void onPostExecute(Cursor res) {
-            if (res.getCount() == 0) {
-                showMessage("Error", "No data found");
-                return;
-            }
-
-            ArrayList<String> entryList = new ArrayList<>();
-            StringBuilder buffer = new StringBuilder();
-            while (res.moveToNext()) {
-                String entry = "ID: " + res.getString(0) + ", Name: " + res.getString(1) + ", Age: " + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4);
-                entryList.add(entry);
-                buffer.append("ID :").append(res.getString(0)).append("\n");
-                buffer.append("Name :").append(res.getString(1)).append("\n");
-                buffer.append("Age :").append(res.getString(2)).append("\n");
-                buffer.append("Birthday :").append(res.getString(3)).append("\n");
-                buffer.append("Sex :").append(res.getString(4)).append("\n\n");
-            }
-
-            if (isDeleteOperation) {
-                showDeleteDialog(entryList);
-            } else {
-                showMessage("Data", buffer.toString());
-            }
-        }
-    }
-
     private void showDeleteDialog(ArrayList<String> entryList) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Select Entry to Delete");
         builder.setItems(entryList.toArray(new String[0]), (dialog, which) -> {
             String selectedEntry = entryList.get(which);
             String selectedName = selectedEntry.split(",")[1].split(":")[1].trim();
-            new DeleteDataTask().execute(selectedName);
+
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            executor.execute(() -> {
+                int deletedRows = myDb.deleteData(selectedName);
+                handler.post(() -> {
+                    if (deletedRows > 0) {
+                        Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
+                    }
+                });
+            });
         });
         builder.show();
-    }
-
-    private class DeleteDataTask extends AsyncTask<String, Void, Integer> {
-        @Override
-        protected Integer doInBackground(String... params) {
-            String name = params[0];
-            return myDb.deleteData(name);
-        }
-
-        @Override
-        protected void onPostExecute(Integer deletedRows) {
-            if (deletedRows > 0) {
-                Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     private void clearFields() {
