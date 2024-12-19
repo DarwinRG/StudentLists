@@ -27,20 +27,43 @@ public class MainActivity extends AppCompatActivity {
         etAge = findViewById(R.id.etAge);
         etBirthday = findViewById(R.id.etBirthday);
         etSex = findViewById(R.id.etSex);
-        etId = findViewById(R.id.etId); // Add an EditText for ID
+        etId = findViewById(R.id.etId);
         btnAdd = findViewById(R.id.btnAdd);
         btnDelete = findViewById(R.id.btnDelete);
         btnViewAll = findViewById(R.id.btnViewAll);
-        btnUpdate = findViewById(R.id.btnUpdate); // Initialize the update button
+        btnUpdate = findViewById(R.id.btnUpdate);
 
         addData();
         deleteData();
         viewAll();
-        updateData(); // Call the updateData method
+        updateData();
+    }
+
+    private boolean validateInputs() {
+        if (etName.getText().toString().isEmpty() ||
+            etAge.getText().toString().isEmpty() ||
+            etBirthday.getText().toString().isEmpty() ||
+            etSex.getText().toString().isEmpty()) {
+            Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void clearInputs() {
+        etName.setText("");
+        etAge.setText("");
+        etBirthday.setText("");
+        etSex.setText("");
+        etId.setText("");
     }
 
     public void updateData() {
         btnUpdate.setOnClickListener(v -> {
+            if (!validateInputs() || etId.getText().toString().isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please fill all fields including ID", Toast.LENGTH_LONG).show();
+                return;
+            }
             boolean isUpdated = myDb.updateData(etId.getText().toString(),
                     etName.getText().toString(),
                     etAge.getText().toString(),
@@ -48,26 +71,23 @@ public class MainActivity extends AppCompatActivity {
                     etSex.getText().toString());
             if (isUpdated) {
                 Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_LONG).show();
+                clearInputs();
             } else {
                 Toast.makeText(MainActivity.this, "Data not Updated", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
     public void addData() {
         btnAdd.setOnClickListener(v -> {
+            if (!validateInputs()) return;
             boolean isInserted = myDb.insertData(etName.getText().toString(),
                     etAge.getText().toString(),
                     etBirthday.getText().toString(),
                     etSex.getText().toString());
             if (isInserted) {
                 Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                // Clear the input fields
-                etName.setText("");
-                etAge.setText("");
-                etBirthday.setText("");
-                etSex.setText("");
+                clearInputs();
             } else {
                 Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
             }
@@ -76,9 +96,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteData() {
         btnDelete.setOnClickListener(v -> {
+            if (etName.getText().toString().isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please enter the name to delete", Toast.LENGTH_LONG).show();
+                return;
+            }
             Integer deletedRows = myDb.deleteData(etName.getText().toString());
             if (deletedRows > 0) {
                 Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+                clearInputs();
             } else {
                 Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
             }

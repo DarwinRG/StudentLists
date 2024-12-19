@@ -7,6 +7,15 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+    <!-- Guideline to divide the screen into two halves -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- Input fields on the left half -->
     <EditText
         android:id="@+id/etName"
         android:layout_width="0dp"
@@ -14,7 +23,7 @@
         android:hint="Name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <EditText
         android:id="@+id/etAge"
@@ -24,8 +33,7 @@
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/etName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <EditText
         android:id="@+id/etBirthday"
@@ -35,7 +43,7 @@
         android:inputType="date"
         app:layout_constraintTop_toBottomOf="@id/etAge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <EditText
         android:id="@+id/etSex"
@@ -44,7 +52,7 @@
         android:hint="Sex | (Male, Female)"
         app:layout_constraintTop_toBottomOf="@id/etBirthday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <EditText
         android:id="@+id/etId"
@@ -53,15 +61,16 @@
         android:hint="ID"
         app:layout_constraintTop_toBottomOf="@id/etSex"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
+    <!-- Buttons on the right half -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="ADD"
-        app:layout_constraintTop_toBottomOf="@id/etId"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -70,7 +79,7 @@
         android:layout_height="wrap_content"
         android:text="DELETE"
         app:layout_constraintTop_toBottomOf="@id/btnAdd"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -79,7 +88,7 @@
         android:layout_height="wrap_content"
         android:text="VIEW ALL"
         app:layout_constraintTop_toBottomOf="@id/btnDelete"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -88,7 +97,7 @@
         android:layout_height="wrap_content"
         android:text="UPDATE"
         app:layout_constraintTop_toBottomOf="@id/btnViewAll"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
