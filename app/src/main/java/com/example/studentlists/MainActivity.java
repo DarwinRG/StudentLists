@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -165,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> entryList = new ArrayList<>();
                 StringBuilder buffer = new StringBuilder();
                 while (res.moveToNext()) {
-                    String entry = "ID: " + res.getString(0) + ", Name: " + res.getString(1) + ", Age: " + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4);
+                    String entry = "ID: " + res.getString(0) + ", Name: " + res.getString(1) + ", Age: "
+                            + res.getString(2) + ", Birthday: " + res.getString(3) + ", Sex: " + res.getString(4);
                     entryList.add(entry);
                     buffer.append("ID :").append(res.getString(0)).append("\n");
                     buffer.append("Name :").append(res.getString(1)).append("\n");
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isDeleteOperation) {
                     showDeleteDialog(entryList);
                 } else {
-                    showMessage("Data", buffer.toString());
+                    showMessage("Student Data", buffer.toString());
                 }
             });
         });

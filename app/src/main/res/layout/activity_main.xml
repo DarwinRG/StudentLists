@@ -7,86 +7,148 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Name Label -->
+    <TextView
+        android:id="@+id/tvNameLabel"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="NAME:"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <!-- Name Input -->
     <EditText
         android:id="@+id/etName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="First and Last Name"
+        android:inputType="textCapCharacters"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toEndOf="@id/tvNameLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Birthday Label -->
+    <TextView
+        android:id="@+id/tvBirthdayLabel"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="BIRTHDAY:"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <!-- Birthday Input -->
     <EditText
         android:id="@+id/etBirthday"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Birthday (dd/mm/yyyy)"
+        android:layout_height="48dp"
+        android:hint="(dd/mm/yyyy)"
         android:focusable="false"
         android:clickable="true"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toBottomOf="@id/etName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toEndOf="@id/tvBirthdayLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Age Label -->
+    <TextView
+        android:id="@+id/tvAgeLabel"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="AGE:"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/etBirthday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <!-- Age Input -->
     <EditText
         android:id="@+id/etAge"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Age"
         android:inputType="number"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toBottomOf="@id/etBirthday"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toEndOf="@id/tvAgeLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Sex Label -->
+    <TextView
+        android:id="@+id/tvSexLabel"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="SEX:"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/etAge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
 
-
+    <!-- Sex Spinner -->
     <Spinner
         android:id="@+id/spinnerSex"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toBottomOf="@id/etAge"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toEndOf="@id/tvSexLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Add Button -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="ADD"
+        android:text="ADD STUDENT"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/spinnerSex"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Delete Button -->
     <Button
         android:id="@+id/btnDelete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="DELETE"
+        android:text="DELETE STUDENT"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/btnAdd"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- View All Button -->
     <Button
         android:id="@+id/btnViewAll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="VIEW ENTRIES"
+        android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/btnDelete"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Author TextView -->
     <TextView
-    android:id="@+id/tvAuthor"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Made by: DarwinRG"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_margin="16dp"/>
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Made by: DarwinRG"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

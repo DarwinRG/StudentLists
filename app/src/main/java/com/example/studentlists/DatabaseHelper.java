@@ -49,6 +49,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Integer deleteData(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "NAME = ?", new String[]{name});
+        return db.delete(TABLE_NAME, "UPPER(NAME) = ?", new String[]{name.toUpperCase()});
     }
 }
