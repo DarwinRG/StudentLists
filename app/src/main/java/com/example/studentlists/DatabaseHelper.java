@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String name, String age, String birthday, String sex) {
+    public boolean insertData(String name, int age, String birthday, String sex) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2, name);
@@ -50,16 +50,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Integer deleteData(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "NAME = ?", new String[]{name});
-    }
-    public boolean updateData(String id, String name, String age, String birthday, String sex) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_1, id);
-        contentValues.put(COL_2, name);
-        contentValues.put(COL_3, age);
-        contentValues.put(COL_4, birthday);
-        contentValues.put(COL_5, sex);
-        db.update(TABLE_NAME, contentValues, "ID = ?", new String[]{id});
-        return true;
     }
 }

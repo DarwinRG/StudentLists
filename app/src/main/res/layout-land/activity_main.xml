@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".MainActivity">
 
     <!-- Guideline to divide the screen into two halves -->
@@ -20,10 +20,23 @@
         android:id="@+id/etName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="First and Last Name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline" />
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        android:layout_margin="16dp" />
+
+    <EditText
+        android:id="@+id/etBirthday"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Birthday (dd/mm/yyyy)"
+        android:focusable="false"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        android:layout_margin="16dp" />
 
     <EditText
         android:id="@+id/etAge"
@@ -31,37 +44,19 @@
         android:layout_height="wrap_content"
         android:hint="Age"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/etName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline" />
-
-    <EditText
-        android:id="@+id/etBirthday"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Birthday | (dd/mm/yyyy)"
-        android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@id/etAge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline" />
-
-    <EditText
-        android:id="@+id/etSex"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Sex | (Male, Female)"
         app:layout_constraintTop_toBottomOf="@id/etBirthday"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline" />
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        android:layout_margin="16dp" />
 
-    <EditText
-        android:id="@+id/etId"
+    <Spinner
+        android:id="@+id/spinnerSex"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="ID"
-        app:layout_constraintTop_toBottomOf="@id/etSex"
+        app:layout_constraintTop_toBottomOf="@id/etAge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline" />
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        android:layout_margin="16dp" />
 
     <!-- Buttons on the right half -->
     <Button
@@ -71,7 +66,8 @@
         android:text="ADD"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
 
     <Button
         android:id="@+id/btnDelete"
@@ -80,24 +76,25 @@
         android:text="DELETE"
         app:layout_constraintTop_toBottomOf="@id/btnAdd"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
 
     <Button
         android:id="@+id/btnViewAll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="VIEW ALL"
+        android:text="VIEW ENTRIES"
         app:layout_constraintTop_toBottomOf="@id/btnDelete"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
 
-    <Button
-        android:id="@+id/btnUpdate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="UPDATE"
-        app:layout_constraintTop_toBottomOf="@id/btnViewAll"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+    <TextView
+    android:id="@+id/tvAuthor"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Made by: DarwinRG"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_margin="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
