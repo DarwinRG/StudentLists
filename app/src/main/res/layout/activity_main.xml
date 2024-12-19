@@ -11,19 +11,8 @@
         android:id="@+id/etName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="First and Last Name"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="16dp"/>
-
-    <EditText
-        android:id="@+id/etAge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Age"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/etName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="16dp"/>
@@ -35,16 +24,29 @@
         android:hint="Birthday (dd/mm/yyyy)"
         android:focusable="false"
         android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/etAge"
+        app:layout_constraintTop_toBottomOf="@id/etName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Age"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/etBirthday"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="16dp"/>
+
+
 
     <Spinner
         android:id="@+id/spinnerSex"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/etBirthday"
+        app:layout_constraintTop_toBottomOf="@id/etAge"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="16dp"/>
@@ -78,4 +80,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="16dp"/>
+
+    <TextView
+    android:id="@+id/tvAuthor"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Made by: DarwinRG"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_margin="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
