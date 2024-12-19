@@ -1,20 +1,29 @@
 package com.example.studentlists;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
-    EditText etName, etAge, etBirthday, etSex, etId;
-    Button btnAdd, btnDelete, btnViewAll, btnUpdate;
+    EditText etName, etAge, etBirthday;
+    Spinner spinnerSex;
+    Button btnAdd, btnDelete, btnViewAll;
+    String selectedSex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,68 +35,79 @@ public class MainActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
         etBirthday = findViewById(R.id.etBirthday);
-        etSex = findViewById(R.id.etSex);
-        etId = findViewById(R.id.etId);
+        spinnerSex = findViewById(R.id.spinnerSex);
         btnAdd = findViewById(R.id.btnAdd);
         btnDelete = findViewById(R.id.btnDelete);
         btnViewAll = findViewById(R.id.btnViewAll);
-        btnUpdate = findViewById(R.id.btnUpdate);
+
+        // Set up spinner for Sex selection
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sex_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSex.setAdapter(adapter);
+        spinnerSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSex = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedSex = "Male"; // Default to Male
+            }
+        });
+
+        // Set up DatePicker for Birthday
+        etBirthday.setOnClickListener(v -> showDatePickerDialog());
 
         addData();
         deleteData();
         viewAll();
-        updateData();
     }
 
-    private boolean validateInputs() {
-        if (etName.getText().toString().isEmpty() ||
-            etAge.getText().toString().isEmpty() ||
-            etBirthday.getText().toString().isEmpty() ||
-            etSex.getText().toString().isEmpty()) {
-            Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_LONG).show();
-            return false;
+    private void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    String birthday = (dayOfMonth) + "/" + (monthOfYear + 1) + "/" + year1;
+                    etBirthday.setText(birthday);
+                    calculateAge(year1, monthOfYear, dayOfMonth);
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void calculateAge(int year, int month, int day) {
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
         }
-        return true;
-    }
 
-    private void clearInputs() {
-        etName.setText("");
-        etAge.setText("");
-        etBirthday.setText("");
-        etSex.setText("");
-        etId.setText("");
-    }
-
-    public void updateData() {
-        btnUpdate.setOnClickListener(v -> {
-            if (!validateInputs() || etId.getText().toString().isEmpty()) {
-                Toast.makeText(MainActivity.this, "Please fill all fields including ID", Toast.LENGTH_LONG).show();
-                return;
-            }
-            boolean isUpdated = myDb.updateData(etId.getText().toString(),
-                    etName.getText().toString(),
-                    etAge.getText().toString(),
-                    etBirthday.getText().toString(),
-                    etSex.getText().toString());
-            if (isUpdated) {
-                Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_LONG).show();
-                clearInputs();
-            } else {
-                Toast.makeText(MainActivity.this, "Data not Updated", Toast.LENGTH_LONG).show();
-            }
-        });
+        etAge.setText(String.valueOf(age));
     }
 
     public void addData() {
         btnAdd.setOnClickListener(v -> {
-            if (!validateInputs()) return;
             boolean isInserted = myDb.insertData(etName.getText().toString(),
-                    etAge.getText().toString(),
+                    Integer.parseInt(etAge.getText().toString()),
                     etBirthday.getText().toString(),
-                    etSex.getText().toString());
+                    selectedSex);
             if (isInserted) {
                 Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                clearInputs();
+                // Clear the input fields
+                etName.setText("");
+                etBirthday.setText("");
+                etAge.setText("");
+                spinnerSex.setSelection(0);
             } else {
                 Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
             }
@@ -96,14 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteData() {
         btnDelete.setOnClickListener(v -> {
-            if (etName.getText().toString().isEmpty()) {
-                Toast.makeText(MainActivity.this, "Please enter the name to delete", Toast.LENGTH_LONG).show();
-                return;
-            }
             Integer deletedRows = myDb.deleteData(etName.getText().toString());
             if (deletedRows > 0) {
                 Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
-                clearInputs();
             } else {
                 Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
             }
