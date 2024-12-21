@@ -22,21 +22,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
+    // Called when the database is created for the first time
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, AGE INTEGER, BIRTHDAY TEXT, SEX TEXT, EMAIL TEXT)");
     }
 
+    // Called when the database needs to be upgraded
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    // Inserts a new student record into the database
     public boolean insertData(String name, int age, String birthday, String sex, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, name);
+        String normalizedName = name.trim().replaceAll("\\s+", " ").toUpperCase();
+        contentValues.put(COL_2, normalizedName);
         contentValues.put(COL_3, age);
         contentValues.put(COL_4, birthday);
         contentValues.put(COL_5, sex);
@@ -48,13 +52,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Retrieves all student records from the database
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
 
+    // Deletes a student record from the database by name
     public Integer deleteData(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "UPPER(NAME) = ?", new String[]{name.toUpperCase()});
+        String normalizedName = name.trim().replaceAll("\\s+", " ").toUpperCase();
+        return db.delete(TABLE_NAME, "UPPER(NAME) = ?", new String[]{normalizedName});
+    }
+    
+    // Checks if an email already exists in the database
+    public boolean isEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE EMAIL = ?", new String[]{email});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 }
