@@ -55,7 +55,11 @@ The latest release of Student Lists can be found on the [Releases](https://githu
 
 <img src="/screenshots/l-dark.png" alt="Logo" width="600" height="270">
 
+#### Student List View
+
 <img src="/screenshots/l-d-list.png" alt="Logo" width="600" height="270">
+
+#### Delete Dialog View
 
 <img src="/screenshots/l-d-delete.png" alt="Logo" width="600" height="270">
 
@@ -67,7 +71,11 @@ The latest release of Student Lists can be found on the [Releases](https://githu
 
 <img src="/screenshots/p-white.png" alt="Logo" width="270" height="600">
 
+#### Student List View
+
 <img src="/screenshots/p-w-list.png" alt="Logo" width="270" height="600">
+
+#### Delete Dialog View
 
 <img src="/screenshots/p-w-delete.png" alt="Logo" width="270" height="600">
 
