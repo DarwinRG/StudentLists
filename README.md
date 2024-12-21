@@ -44,11 +44,11 @@ The latest release of Student Lists can be found on the [Releases](https://githu
 
 ### Portrait Mode
 
-![Screenshot](ss-pd.png)
+<img src="ss-pd.png" alt="Logo" width="270" height="600">
 
 ### Landscape Mode
 
-![Screenshot](ss-ld.png)
+<img src="ss-ld.png" alt="Logo" width="600" height="270">
 
 &nbsp;
 
@@ -56,13 +56,13 @@ The latest release of Student Lists can be found on the [Releases](https://githu
 
 ### Portrait Mode
 
-![Screenshot](ss-pl.png)
+<img src="ss-pl.png" alt="Logo" width="270" height="600">
 
 &nbsp;
 
 ### Landscape Mode
 
-![Screenshot](ss-ll.png)
+<img src="ss-ll.png" alt="Logo" width="600" height="270">
 
 </div>
 
