@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.png" alt="Logo" width="480" height="270">
+<img src="logo.png" alt="Logo" width="400" height="400">
 
 </div>
 
@@ -22,13 +22,13 @@ Student Lists is an Android application designed to manage and organize student 
 - **Android SDK**
 - **SQLite**
 
-&nbsp;
-
 ## 🧑‍💻Authors
 
 - [DarwinRG](https://github.com/DarwinRG)
 
 - [ruseki](https://github.com/ruseki)
+
+&nbsp;
 
 ## 🚀Release
 
