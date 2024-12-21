@@ -9,7 +9,7 @@
 Student Lists is an Android application designed to efficiently manage and organize student information. It allows users to add and delete student details with robust input and data validation to ensure data integrity. The app supports both portrait and landscape orientations and features a responsive design optimized for various screen sizes. Users can switch between light and dark mode themes for comfortable viewing in any lighting condition, and receive user-friendly toast messages for feedback on actions. The intuitive and clean user interface ensures easy navigation throughout the app.
 
 &nbsp;
-## 🪶Features
+## ✨Features
 
 - Add and delete student details
 - Support for both portrait and landscape orientations
