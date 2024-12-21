@@ -1,15 +1,45 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+# Ignore IntelliJ IDEA project files
+/.idea/
+
+# Ignore build output directories
+/build/
+/out/
+
+# Ignore Gradle files
+.gradle/
+/build/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore OS-specific files
+Thumbs.db
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+
+# Ignore generated files
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore dependency directories
+/node_modules/
+/bower_components/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
